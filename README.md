@@ -1,6 +1,9 @@
 # test-robustfundamentalmat-opencv-python
 Simple Python script for testing the robust estimation of the fundamental matrix between two images with RANSAC and MAGSAC++ in OpenCV, and reproducibility across 100 runs.
 
+The script is a personal adaption of codes taken from:
+* [Practical Computer Vision] (https://www.programcreek.com/python/?code=PacktPublishing%2FPractical-Computer-Vision%2FPractical-Computer-Vision-master%2FChapter08%2F08_compute_F_mat.py)
+* [MAGSAC](https://github.com/danini/magsac/blob/master/examples/example_fundamental_matrix.ipynb)
 
 ## Setup
 * Ubuntu 18.04 LTS
@@ -39,6 +42,12 @@ The script returns the same fundamental matrix and number of inliers across the 
 ## Enquiries, Question and Comments
 
 If you have any further enquiries, question, or comments, please contact a.xompero@gmail.com If you would like to file a bug report or a feature request, use the Github issue tracker. 
+
+## References
+
+D. Barath, J. Noskova, M. Ivashechkin, J. Matas, **MAGSAC++, a fast, reliable and accurate robust estimator**, CVPR 2020  
+[[paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Barath_MAGSAC_a_Fast_Reliable_and_Accurate_Robust_Estimator_CVPR_2020_paper.pdf)] [[code](https://github.com/danini/magsac)]
+
 
 
 ## Licence
