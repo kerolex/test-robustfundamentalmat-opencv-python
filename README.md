@@ -2,7 +2,7 @@
 Simple Python script for testing the robust estimation of the fundamental matrix between two images with RANSAC and MAGSAC++ in OpenCV, and reproducibility across 100 runs.
 
 The script is a personal adaption of codes taken from:
-* [Practical Computer Vision] (https://www.programcreek.com/python/?code=PacktPublishing%2FPractical-Computer-Vision%2FPractical-Computer-Vision-master%2FChapter08%2F08_compute_F_mat.py)
+* [Practical Computer Vision](https://www.programcreek.com/python/?code=PacktPublishing%2FPractical-Computer-Vision%2FPractical-Computer-Vision-master%2FChapter08%2F08_compute_F_mat.py)
 * [MAGSAC](https://github.com/danini/magsac/blob/master/examples/example_fundamental_matrix.ipynb)
 
 ## Setup
