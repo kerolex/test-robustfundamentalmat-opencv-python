@@ -5,6 +5,19 @@ The script is a personal adaption of codes taken from:
 * [Practical Computer Vision](https://www.programcreek.com/python/?code=PacktPublishing%2FPractical-Computer-Vision%2FPractical-Computer-Vision-master%2FChapter08%2F08_compute_F_mat.py)
 * [MAGSAC](https://github.com/danini/magsac/blob/master/examples/example_fundamental_matrix.ipynb)
 
+
+
+# Table of Contents
+
+1. [Setup](#setup)
+2. [Demo](#demo)
+3. [Arguments](#arguments)
+4. [Known issues](#known-issues)
+5. [Enquiries, Question and Comments](#enquiries-question-and-comments)
+6. [Reference](#references)
+7. [Licence](#licence)
+
+
 ## Setup
 * Ubuntu 18.04 LTS
 * OpenCV: 4.5.5
@@ -24,15 +37,15 @@ Values of the arguments can be changed directly in the Python script or passed w
 The demo runs automatically the robust estimator MAGSAC++. This can be changed to RANSAC by commenting and uncommenting the line with cv2.findFundamentalMat().
 
 ## Arguments
-* n_runs: number of runs (default: 5)
-* min_num_inliers: minimum number of inliers to accept the estimated fundamental matrix (default: 15)
-* ransacReprojThreshold: maximum reprojection error allowed for RANSAC (default: 2.0)
-* conf: confidence for RANSAC (default: 0.99)
-* maxIters: maximum number of iterations for RANSAC (default: 1000)
-* max_n_kps: maximum number of keypoints to detect in an image (default: 1000)
-* dist_th: threshold on the Hamming distance for ORB features (default: 50)
-* snn_th: threshold for the Lowe's ratio test or Second Nearest Neighbour (default: 0.6)
-* feature: type of local image feature to use, for example SIFT or ORB (default: orb)
+* _n_runs_: number of runs (default: 5)
+* _min_num_inliers_: minimum number of inliers to accept the estimated fundamental matrix (default: 15)
+* _ransacReprojThreshold_: maximum reprojection error allowed for RANSAC (default: 2.0)
+* _conf_: confidence for RANSAC (default: 0.99)
+* _maxIters_: maximum number of iterations for RANSAC (default: 1000)
+* _max_n_kps_: maximum number of keypoints to detect in an image (default: 1000)
+* _dist_th_: threshold on the Hamming distance for ORB features (default: 50)
+* _snn_th_: threshold for the Lowe's ratio test or Second Nearest Neighbour (default: 0.6)
+* _feature_: type of local image feature to use, for example SIFT or ORB (default: orb)
 
 ## Known issues
 
@@ -48,6 +61,7 @@ If you have any further enquiries, question, or comments, please contact a.xompe
 D. Barath, J. Noskova, M. Ivashechkin, J. Matas, **MAGSAC++, a fast, reliable and accurate robust estimator**, CVPR 2020  
 [[paper](https://openaccess.thecvf.com/content_CVPR_2020/papers/Barath_MAGSAC_a_Fast_Reliable_and_Accurate_Robust_Estimator_CVPR_2020_paper.pdf)] [[code](https://github.com/danini/magsac)]
 
+D. Mishkin, **Evaluating OpenCV new RANSACs**, Blog post [[link](https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html)]
 
 
 ## Licence
