@@ -23,6 +23,15 @@ The script is a personal adaption of codes taken from:
 * OpenCV: 4.5.5
 * Python: 3.10
 
+Create a conda environment name USAC with py-opencv and tqdm packages:
+
+```
+conda create --name USAC python=3.10
+conda install -c conda-forge py-opencv tqdm
+```
+
+
+
 ## Demo
 
 From Linux terminal, run to activate the created conda environment and launch the testing Python script:
