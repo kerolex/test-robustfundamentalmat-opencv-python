@@ -2,10 +2,10 @@
 #
 ################################################################################## 
 # Author: 
-#   Alessio Xompero: a.xompero@qmul.ac.uk
+#   Alessio Xompero: a.xompero@gmail.com
 #
-#  Created Date: 2022/06/01
-# Modified Date: 2022/06/01
+#  Created Date: 2022/06/08
+# Modified Date: 2022/06/08
 #
 #####################################################################################
 # MIT License
