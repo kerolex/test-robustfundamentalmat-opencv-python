@@ -147,6 +147,126 @@ def BruteForceMatcher(des1, des2, opt):
 	return tentatives
 
 
+
+def PrintUsacParameters(usac_params):
+	print('USAC Parameters')
+
+	print('randomGeneratorState: {:d}'.format(usac_params.randomGeneratorState))
+	print('confidence: {:f}'.format(usac_params.confidence))
+	print('maxIterations: {:d}'.format(usac_params.maxIterations))
+	print('threshold: {:f}'.format(usac_params.threshold))
+	print('isParallel: {:d}'.format(int(usac_params.isParallel)))
+	print('loIterations: {:d}'.format(usac_params.loIterations))
+	print('loSampleSize: {:d}'.format(usac_params.loSampleSize)) 
+
+	if usac_params.score == cv2.SCORE_METHOD_RANSAC:
+		print('score: SCORE_METHOD_RANSAC')
+	elif usac_params.score == cv2.SCORE_METHOD_MSAC:
+		print('score: SCORE_METHOD_MSAC')
+	elif usac_params.score == cv2.SCORE_METHOD_MAGSAC:
+		print('score: SCORE_METHOD_MAGSAC')
+	elif usac_params.score == cv2.SCORE_METHOD_LMEDS:
+		print('score: SCORE_METHOD_LMEDS')
+
+	if usac_params.loMethod == cv2.LOCAL_OPTIM_NULL:
+		print('loMethod: LOCAL_OPTIM_NULL')
+	elif usac_params.loMethod == cv2.LOCAL_OPTIM_INNER_LO:
+		print('loMethod: LOCAL_OPTIM_INNER_LO')
+	elif usac_params.loMethod == cv2.LOCAL_OPTIM_INNER_AND_ITER_LO:
+		print('loMethod: LOCAL_OPTIM_INNER_AND_ITER_LO')
+	elif usac_params.loMethod == cv2.LOCAL_OPTIM_GC:
+		print('loMethod: LOCAL_OPTIM_GC')
+	elif usac_params.loMethod == cv2.LOCAL_OPTIM_SIGMA:
+		print('loMethod: LOCAL_OPTIM_SIGMA')
+
+	if usac_params.neighborsSearch == cv2.NEIGH_FLANN_KNN:
+		print('neighborsSearch: NEIGH_FLANN_KNN')
+	elif usac_params.neighborsSearch == cv2.NEIGH_GRID:
+		print('neighborsSearch: NEIGH_GRID')
+	elif usac_params.neighborsSearch == cv2.NEIGH_FLANN_RADIUS:
+		print('neighborsSearch: NEIGH_FLANN_RADIUS')
+
+	if usac_params.sampler == cv2.SAMPLING_UNIFORM:
+		print('sampler: SAMPLING_UNIFORM')
+	elif usac_params.sampler == cv2.SAMPLING_PROGRESSIVE_NAPSAC:
+		print('sampler: SAMPLING_PROGRESSIVE_NAPSAC')
+	elif usac_params.sampler == cv2.SAMPLING_NAPSAC:
+		print('sampler: SAMPLING_NAPSAC')
+	elif usac_params.sampler == cv2.SAMPLING_PROSAC:
+		print('sampler: SAMPLING_PROSAC')
+
+
+'''
+uncommenting the line: usac_params.randomGeneratorState = random.randint(0,1000000)
+results in the same bahviour of
+F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
+where the estimated fundamental matrix and number of inliers is 
+repeatable across iterations
+'''
+def FindFundamentalMatMAGSACplusplus(pts1, pts2, ransacReprojThreshold, confidence, maxIters):
+	# set OpenCV USAC parameters for MAGSAC++
+	usac_params = cv2.UsacParams()
+
+	usac_params.randomGeneratorState = random.randint(0,1000000)
+	usac_params.confidence = confidence
+	usac_params.maxIterations = maxIters
+	usac_params.loMethod = cv2.LOCAL_OPTIM_SIGMA
+	usac_params.score = cv2.SCORE_METHOD_MAGSAC
+	usac_params.threshold = ransacReprojThreshold
+	# usac_params.isParallel = False # False is deafult
+	usac_params.loIterations = 10
+	usac_params.loSampleSize = 50
+	usac_params.neighborsSearch = cv2.NEIGH_GRID
+	usac_params.sampler = cv2.SAMPLING_UNIFORM
+ 
+	# PrintUsacParameters(usac_params)
+
+	# Compute fundamental matrix
+	F, status	=	cv2.findFundamentalMat(pts1, pts2, usac_params)
+
+	return F, status
+
+'''
+uncommenting the line: usac_params.randomGeneratorState = random.randint(0,1000000)
+results in the same bahviour of
+F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThreshold, confidence, maxIters)
+where the estimated fundamental matrix and number of inliers is 
+repeatable across iterations
+'''
+def FindFundamentalMatRANSAC(pts1, pts2, ransacReprojThreshold, confidence, maxIters):
+	# set OpenCV USAC parameters for MAGSAC++
+	usac_params = cv2.UsacParams()
+
+	usac_params.randomGeneratorState = random.randint(0,1000000)
+	usac_params.confidence = confidence
+	usac_params.maxIterations = maxIters
+	usac_params.loMethod = cv2.LOCAL_OPTIM_NULL
+	usac_params.score = cv2.SCORE_METHOD_RANSAC
+	usac_params.threshold = ransacReprojThreshold
+	# usac_params.isParallel = False # False is deafult
+	# usac_params.loIterations = 10
+	# usac_params.loSampleSize = 50
+	# usac_params.neighborsSearch = cv2.NEIGH_FLANN_RADIUS
+	usac_params.sampler = cv2.SAMPLING_UNIFORM
+ 
+	# PrintUsacParameters(usac_params)
+
+	# Compute fundamental matrix
+	F, status	=	cv2.findFundamentalMat(pts1, pts2, usac_params)
+	# F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThreshold, confidence, maxIters)
+
+	return F, status
+
+
+def FindRobustFundamentalMat(pts1, pts2, flag, ransacReprojThreshold, confidence, maxIters):
+	if flag == 'RANSAC':
+		F, status = FindFundamentalMatRANSAC(pts1, pts2, ransacReprojThreshold, confidence, maxIters)
+	elif flag == 'MAGSAC++':
+		F, status = FindFundamentalMatMAGSACplusplus(pts1, pts2, ransacReprojThreshold, confidence, maxIters)
+
+	return F, status
+
+
 def ComputeFundamentalMatrix(filename1, filename2, opt):
 	"""
 	Takes in filenames of two input images 
@@ -179,10 +299,9 @@ def ComputeFundamentalMatrix(filename1, filename2, opt):
 	pts1  = np.asarray(pts1)
 	pts2 = np.asarray(pts2)
 
+
 	# Compute fundamental matrix
-	F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
-	# F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThreshold, confidence, maxIters)
-	# F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.FM_8POINT)
+	F, status	=	FindRobustFundamentalMat(pts1, pts2, opt.SACestimator, ransacReprojThreshold, confidence, maxIters)
 
 	if F is None or F.shape == (1, 1):
 		print('No fundamental matrix found')
@@ -213,11 +332,11 @@ if __name__ == '__main__':
 		exit(1)
 
 	# Arguments
-	parser = argparse.ArgumentParser(description='CO3D Ground-truth generation')
-	parser.add_argument('--dataset', default='gate', type=str)
+	parser = argparse.ArgumentParser(description='RANSAC and MAGSAC++ test')
+	parser.add_argument('--dataset', default='EuR5', type=str)
 	parser.add_argument('--datapath', default='', type=str)
 	parser.add_argument('--respath', default='', type=str)
-	parser.add_argument('--n_runs', default='5', type=int)
+	parser.add_argument('--n_runs', default='100', type=int)
 
 	parser.add_argument('--min_num_inliers', default='15', type=int)
 	parser.add_argument('--ransacReprojThreshold', default='2.0', type=float)
@@ -230,6 +349,8 @@ if __name__ == '__main__':
 	parser.add_argument('--snn_th', default='0.6', type=float)
 
 	parser.add_argument('--feature', default='orb', type=str, choices=['sift','orb'])
+
+	parser.add_argument('--SACestimator', default='RANSAC', type=str, choices=['RANSAC','MAGSAC++'])
 
 	args = parser.parse_args()
 
