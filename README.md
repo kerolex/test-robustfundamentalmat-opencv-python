@@ -26,8 +26,9 @@ The script is a personal adaption of codes taken from:
 Create a conda environment name USAC with py-opencv and tqdm packages:
 
 ```
-conda create --name USAC python=3.10
-conda install -c conda-forge py-opencv tqdm
+conda create --name USAC
+conda install -c conda-forge py-opencv
+conda install -c conda-forge tqdm
 ```
 
 
@@ -63,11 +64,11 @@ The script returns the same fundamental matrix and number of inliers across the 
 
 The behaviour is due to a random seed initialises always to zero when calling:
 ```
-F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
+F, status = cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
 ```
 or
 ```
-F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThreshold, confidence, maxIters)
+F, status = cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThreshold, confidence, maxIters)
 ```
 
 I would reccomend to avoid using the above functions. To fix the issue and folliwing the reply provided in OpenCV Forum, I would suggest using the following portions of code (here reported only for MAGSAC++):
@@ -94,7 +95,7 @@ def FindFundamentalMatMAGSACplusplus(pts1, pts2, ransacReprojThreshold, confiden
 
 If you comment the line about setting the randomGenerateState, the code will generate the same output  as the previous command:
 ```
-F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
+F, status = cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
 ```
 
 Setting the randomGenerateState to random integers will restore the standard non-deterministic behaviour of these estimators, providing different results for each run. 
