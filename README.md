@@ -103,11 +103,6 @@ F, status = cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThre
 
 Setting the randomGenerateState to random integers will restore the standard non-deterministic behaviour of these estimators, providing different results for each run. 
 
-
-## Enquiries, Question and Comments
-
-If you have any further enquiries, question, or comments, please contact a.xompero@gmail.com If you would like to file a bug report or a feature request, use the Github issue tracker. 
-
 ## References
 
 D. Barath, J. Noskova, M. Ivashechkin, J. Matas, **MAGSAC++, a fast, reliable and accurate robust estimator**, CVPR 2020  
@@ -116,9 +111,16 @@ D. Barath, J. Noskova, M. Ivashechkin, J. Matas, **MAGSAC++, a fast, reliable an
 D. Mishkin, **Evaluating OpenCV new RANSACs**, Blog post [[link](https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html)]
 
 
-The script is a personal adaption of codes taken from:
+The Python script is a personal adaption of codes taken from:
 * [Practical Computer Vision](https://www.programcreek.com/python/?code=PacktPublishing%2FPractical-Computer-Vision%2FPractical-Computer-Vision-master%2FChapter08%2F08_compute_F_mat.py)
 * [MAGSAC](https://github.com/danini/magsac/blob/master/examples/example_fundamental_matrix.ipynb)
+
+
+## Enquiries, Question and Comments
+
+If you have any further enquiries, question, or comments, please contact a.xompero@gmail.com If you would like to file a bug report or a feature request, use the Github issue tracker. 
+
+
 
 ## Licence
 
