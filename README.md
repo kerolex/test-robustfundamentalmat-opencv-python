@@ -55,10 +55,49 @@ The demo runs automatically the robust estimator MAGSAC++. This can be changed t
 * _dist_th_: threshold on the Hamming distance for ORB features (default: 50)
 * _snn_th_: threshold for the Lowe's ratio test or Second Nearest Neighbour (default: 0.6)
 * _feature_: type of local image feature to use, for example SIFT or ORB (default: orb)
+* _SACestimator_: algorithm to use for robustly estimating the fundamental matrix, for example RANSAC or MAGSAC++ (default: MAGSAC++)
 
 ## Known issues
 
-The script returns the same fundamental matrix and number of inliers across the 100 runs without changing any value of the parameters. This behaviour is unexpected due to the sampling approach of the estimators (RANSAC, MAGSAC++). I posted a [question](https://forum.opencv.org/t/ransac-like-estimators-not-random-across-multiple-runs/9086) on the OpenCV to know more about this behaviour. 
+The script returns the same fundamental matrix and number of inliers across the 100 runs without changing any value of the parameters. This behaviour is unexpected due to the sampling approach of the estimators (RANSAC, MAGSAC++). I posted a [question](https://forum.opencv.org/t/ransac-like-estimators-not-random-across-multiple-runs/9086) on the OpenCV Forum to know more about this behaviour. 
+
+The behaviour is due to a random seed initialises always to zero when calling:
+```
+F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
+```
+or
+```
+F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThreshold, confidence, maxIters)
+```
+
+I would reccomend to avoid using the above functions. To fix the issue and folliwing the reply provided in OpenCV Forum, I would suggest using the following portions of code (here reported only for MAGSAC++):
+```
+def FindFundamentalMatMAGSACplusplus(pts1, pts2, ransacReprojThreshold, confidence, maxIters):
+  usac_params = cv2.UsacParams()
+
+  usac_params.randomGeneratorState = random.randint(0,1000000)
+  usac_params.confidence = confidence
+  usac_params.maxIterations = maxIters
+  usac_params.loMethod = cv2.LOCAL_OPTIM_SIGMA
+  usac_params.score = cv2.SCORE_METHOD_MAGSAC
+  usac_params.threshold = ransacReprojThreshold
+  # usac_params.isParallel = False # False is deafult
+  usac_params.loIterations = 10
+  usac_params.loSampleSize = 50
+  usac_params.neighborsSearch = cv2.NEIGH_GRID
+  usac_params.sampler = cv2.SAMPLING_UNIFORM
+
+  F, status = cv2.findFundamentalMat(pts1, pts2, usac_params)
+
+  return F, status
+```
+
+If you comment the line about setting the randomGenerateState, the code will generate the same output  as the previous command:
+```
+F, status	=	cv2.findFundamentalMat(pts1, pts2, cv2.USAC_MAGSAC, ransacReprojThreshold, confidence, maxIters)
+```
+
+Setting the randomGenerateState to random integers will restore the standard non-deterministic behaviour of these estimators, providing different results for each run. 
 
 
 ## Enquiries, Question and Comments
