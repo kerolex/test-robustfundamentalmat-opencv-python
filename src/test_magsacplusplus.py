@@ -5,7 +5,7 @@
 #   Alessio Xompero: a.xompero@gmail.com
 #
 #  Created Date: 2022/06/08
-# Modified Date: 2022/06/08
+# Modified Date: 2022/06/09
 #
 #####################################################################################
 # MIT License
@@ -350,7 +350,7 @@ if __name__ == '__main__':
 
 	parser.add_argument('--feature', default='orb', type=str, choices=['sift','orb'])
 
-	parser.add_argument('--SACestimator', default='RANSAC', type=str, choices=['RANSAC','MAGSAC++'])
+	parser.add_argument('--SACestimator', default='MAGSAC++', type=str, choices=['RANSAC','MAGSAC++'])
 
 	args = parser.parse_args()
 
