@@ -54,20 +54,20 @@ SAC_ESTIMATOR='MAGSAC++'
 ############################################
 source activate USAC
 
-python test_magsacplusplus.py 							\ 
-	--respath  							$RESPATH 					\ 
-	--datapath 							$DATAPATH 				\ 
-	--dataset  							$DATASET 					\ 
- 	--n_runs   							$N_RUNS 					\ 
- 	--min_num_inliers 			$MIN_N_INLIERS 		\ 
- 	--ransacReprojThreshold $RANSAC_REPROJ_TH \ 
- 	--conf 									$CONFIDENCE 			\ 
- 	--maxIters 							$MAX_ITERS 				\ 
- 	--max_n_kps							$MAX_N_KPS 				\ 
- 	--dist_th								$DIST_TH 					\ 
- 	--snn_th								$SNN_TH 					\ 
- 	--feature								$LOCAL_FEAT				\ 
- 	--SACestimator					$SAC_ESTIMATOR 				
+python test_magsacplusplus.py \
+	--respath  							$RESPATH 					\
+	--datapath 							$DATAPATH 				\
+	--dataset  							$DATASET 					\
+	--n_runs   							$N_RUNS 					\
+	--min_num_inliers 			$MIN_N_INLIERS 		\
+	--ransacReprojThreshold $RANSAC_REPROJ_TH \
+	--conf 									$CONFIDENCE 			\
+	--maxIters 							$MAX_ITERS 				\
+	--max_n_kps							$MAX_N_KPS 				\
+	--dist_th								$DIST_TH 					\
+	--snn_th								$SNN_TH 					\
+	--feature								$LOCAL_FEAT				\
+	--SACestimator					$SAC_ESTIMATOR 				
 
 echo "Finished!"
 
