@@ -1,10 +1,14 @@
-# test-robustfundamentalmat-opencv-python
-Simple Python script for testing the robust estimation of the fundamental matrix between two images with RANSAC and MAGSAC++ in OpenCV, and reproducibility across 100 runs.
+# Robust estimation of the fundamantal matrix with MAGSAC++ in OpenCV and Python - Testing
 
-The script is a personal adaption of codes taken from:
-* [Practical Computer Vision](https://www.programcreek.com/python/?code=PacktPublishing%2FPractical-Computer-Vision%2FPractical-Computer-Vision-master%2FChapter08%2F08_compute_F_mat.py)
-* [MAGSAC](https://github.com/danini/magsac/blob/master/examples/example_fundamental_matrix.ipynb)
+RANSAC-like fitting model methods used for different computer vision taks, such as 3D reconstruction, ego-motion estimation, image matching, etc., are based on sampling strategies that makes the output of the methods non-deterministic. Because of this, one should expect implementations of these methods in OpenCV to output different results when running multiple times on the same data and with the same paramters. But this is currently not happening, and running 
+```
+F, status = cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThreshold, confidence, maxIters)
+```
+multiple times returns always the same fundamental matrix and number of inliers (FM_RANSAC can be replaced with any other USAC method). This is caused by a random seed initialised always to the same value in the OpenCV source code. 
 
+**Therefore, STOP using this function!**
+
+Instead, start initialising the parameters of the struct _UsacParams()_, especially by randomly setting _randomGeneratorState_ and the non-deterministic behaviour will be restored!
 
 
 # Table of Contents
@@ -31,8 +35,6 @@ conda install -c conda-forge py-opencv
 conda install -c conda-forge tqdm
 ```
 
-
-
 ## Demo
 
 From Linux terminal, run to activate the created conda environment and launch the testing Python script:
@@ -44,7 +46,8 @@ The script will run on two example images from the sequence Machine Hall 05 of t
 
 Values of the arguments can be changed directly in the Python script or passed within the bash script.
 
-The demo runs automatically the robust estimator MAGSAC++. This can be changed to RANSAC by commenting and uncommenting the line with cv2.findFundamentalMat().
+The demo runs automatically the robust estimator MAGSAC++. 
+
 
 ## Arguments
 * _n_runs_: number of runs (default: 5)
@@ -112,6 +115,10 @@ D. Barath, J. Noskova, M. Ivashechkin, J. Matas, **MAGSAC++, a fast, reliable an
 
 D. Mishkin, **Evaluating OpenCV new RANSACs**, Blog post [[link](https://ducha-aiki.github.io/wide-baseline-stereo-blog/2021/05/17/OpenCV-New-RANSACs.html)]
 
+
+The script is a personal adaption of codes taken from:
+* [Practical Computer Vision](https://www.programcreek.com/python/?code=PacktPublishing%2FPractical-Computer-Vision%2FPractical-Computer-Vision-master%2FChapter08%2F08_compute_F_mat.py)
+* [MAGSAC](https://github.com/danini/magsac/blob/master/examples/example_fundamental_matrix.ipynb)
 
 ## Licence
 
