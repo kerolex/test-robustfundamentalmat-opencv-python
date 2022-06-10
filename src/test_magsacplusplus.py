@@ -63,6 +63,42 @@ def CheckOpenCvVersion():
 	else:
 		return True
 
+'''
+Partially taken from https://pyimagesearch.com/2015/04/13/implementing-rootsift-in-python-and-opencv/
+'''
+class RootSIFT:
+    def __init__(self, max_n_kps):
+        # initialize the SIFT feature extractor
+        # self.extractor = cv2.DescriptorExtractor_create("SIFT")
+        self.extractor = cv2.SIFT_create(max_n_kps)    
+
+    def compute(self, image, eps=1e-7):
+        # compute SIFT descriptors
+        kps, descs = self.extractor.detectAndCompute(image, None)
+        
+        # if there are no keypoints or descriptors, return an empty tuple
+        if len(kps) == 0:
+            return ([], None)
+        
+        # apply the Hellinger kernel by first L1-normalizing and taking the
+        # square-root
+        descs /= (descs.sum(axis=1, keepdims=True) + eps)
+        descs = np.sqrt(descs)
+        #descs /= (np.linalg.norm(descs, axis=1, ord=2) + eps)
+        # return a tuple of the keypoints and descriptors
+        return kps, descs
+
+def ComputeRootSIFTfeatures(filename, max_n_kps):
+	print('Computing RootSIFT features')
+	# load image
+	img = cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2GRAY)
+
+	# create sift object
+	rootsift_extractor = RootSIFT(max_n_kps)
+
+	kps, des = rootsift_extractor.compute(img)
+
+	return img, kps, des
 
 
 def ComputeSIFTfeatures(filename, max_n_kps):
@@ -125,7 +161,7 @@ def BruteForceMatcher(des1, des2, opt):
 			if m.distance < dist_th:
 				tentatives.append(m)
 	
-	elif opt.feature == 'sift':
+	elif (opt.feature == 'sift') | (opt.feature == 'rootsift'):
 		bf = cv2.BFMatcher()
 
 		SNN_threshold = opt.snn_th
@@ -286,6 +322,10 @@ def ComputeFundamentalMatrix(filename1, filename2, opt):
 		# compute SIFT keypoints and descriptor for each image
 		img1, kp1, des1 = ComputeSIFTfeatures(filename1, opt.max_n_kps)
 		img2, kp2, des2 = ComputeSIFTfeatures(filename2, opt.max_n_kps)
+	elif opt.feature == 'rootsift':
+		# compute SIFT keypoints and descriptor for each image
+		img1, kp1, des1 = ComputeRootSIFTfeatures(filename1, opt.max_n_kps)
+		img2, kp2, des2 = ComputeRootSIFTfeatures(filename2, opt.max_n_kps)
 
 	# compute keypoint matches using descriptor
 	matches = BruteForceMatcher(des1, des2, opt)
@@ -348,7 +388,7 @@ if __name__ == '__main__':
 	parser.add_argument('--dist_th', default='50', type=int)
 	parser.add_argument('--snn_th', default='0.6', type=float)
 
-	parser.add_argument('--feature', default='orb', type=str, choices=['sift','orb'])
+	parser.add_argument('--feature', default='orb', type=str, choices=['sift','orb', 'rootsift'])
 
 	parser.add_argument('--SACestimator', default='MAGSAC++', type=str, choices=['RANSAC','MAGSAC++'])
 

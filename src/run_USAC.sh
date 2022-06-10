@@ -48,7 +48,7 @@ MAX_ITERS=1000
 MAX_N_KPS=1000
 DIST_TH=50
 SNN_TH=0.6
-LOCAL_FEAT='orb'
+LOCAL_FEAT='rootsift'
 SAC_ESTIMATOR='MAGSAC++'
 
 ############################################
