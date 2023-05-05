@@ -6,7 +6,7 @@ F, status = cv2.findFundamentalMat(pts1, pts2, cv2.FM_RANSAC, ransacReprojThresh
 ```
 multiple times returns always the same fundamental matrix and number of inliers (FM_RANSAC can be replaced with any other USAC method). This is caused by a random seed initialised always to the same value in the OpenCV source code. 
 
-**Therefore, STOP using this function!**
+Therefore, STOP using this function!
 
 Instead, start initialising the parameters of the struct _UsacParams()_, especially by randomly setting _randomGeneratorState_ and the non-deterministic behaviour will be restored!
 
