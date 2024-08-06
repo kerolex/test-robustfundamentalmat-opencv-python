@@ -118,8 +118,7 @@ The Python script is a personal adaption of codes taken from:
 
 ## Enquiries, Question and Comments
 
-If you have any further enquiries, question, or comments, please contact a.xompero@gmail.com If you would like to file a bug report or a feature request, use the Github issue tracker. 
-
+If you have any further enquiries, questions, comments, or you would like to file a bug report or a feature request, use the Github issue tracker.
 
 
 ## Licence
